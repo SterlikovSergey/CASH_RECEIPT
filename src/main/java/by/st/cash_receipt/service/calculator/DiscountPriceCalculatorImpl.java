@@ -1,7 +1,7 @@
-package by.st.cash_receipt.service;
+package by.st.cash_receipt.service.calculator;
 
 import by.st.cash_receipt.model.DiscountCard;
-import by.st.cash_receipt.service.impl.PriceCalculator;
+import by.st.cash_receipt.service.calculator.impl.PriceCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +19,20 @@ public class DiscountPriceCalculatorImpl implements PriceCalculator {
 
     @Override
     public Double calculatePrice() {
-        double totalPrice = calculator.calculatePrice();
-        double discount = totalPrice * (discountCard.getDiscountRate() / 100);
-        return totalPrice - discount;
+        return calculator.calculatePrice();
     }
 
     @Override
     public Double calculateDiscount() {
         double totalPrice = calculator.calculatePrice();
-        return totalPrice * (discountCard.getDiscountRate() / 100);
+        if (discountCard != null) {
+            return totalPrice * (discountCard.getDiscountRate() / 100);
+        }
+        return 0.0;
+    }
+
+    @Override
+    public Double calculatePromotional() {
+        return 0.0;
     }
 }

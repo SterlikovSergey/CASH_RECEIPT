@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class ProductMapper {
     public Product toProduct(ProductDto dto) {
         return Product.builder()
-                .name(dto.getName())
+                .description(dto.getDescription())
                 .price(dto.getPrice())
                 .isPromotional(dto.getIsPromotional())
                 .build();

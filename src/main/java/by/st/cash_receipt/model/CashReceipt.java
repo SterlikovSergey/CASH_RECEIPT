@@ -36,10 +36,16 @@ public class CashReceipt {
     @ManyToOne
     private DiscountCard discountCard;
 
-    private Double totalPrice; //Общая цена
+    @Column(name = "PROMOTIONAL_TOT")
+    private Double totalDiscountPromotional; // сумма скидки по акционным товарам если их больше пяти
 
-    private Double totalDiscount;  //Общая скидка
+    @Column(name = "TAXABLE_TOT")
+    private Double totalPrice; //Общая стоимость товаров без скидки
 
-    private Double totalPriceWithDiscount; //Общая цена со скидкой
+    @Column(name = "VAT")
+    private Double totalDiscount;  //сумма скидки по скидочной карте для неаукционных товаров и акционных товаров если их меньше пяти
+
+    @Column(name = "TOTAL")
+    private Double totalPriceWithDiscount; //итоговая цена с учётом скидки по скидочной карте
 
 }
