@@ -26,7 +26,7 @@ public class CashReceiptController {
     @GetMapping("/check")
     public ResponseEntity<CashReceipt> getCashReceipt(@RequestParam List<Long> itemsIds,
                                                       @RequestParam(required = false) Long discountId) {
-        Map<Product, Integer> productIntegerMap = productService.getProductsCount(itemsIds);
+        Map<Product, Integer> productIntegerMap = productService.getCounts(itemsIds);
         DiscountCard discountCard = discountId == null ? null : discountCardService.getDiscountCardBy(discountId);
         log.info("productIntegerMap: {}", productIntegerMap);
         log.info("discountCard: {}", discountCard);

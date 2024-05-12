@@ -1,7 +1,7 @@
-package by.st.cash_receipt.service.calculator;
+package by.st.cash_receipt.calculator;
 
 import by.st.cash_receipt.model.DiscountCard;
-import by.st.cash_receipt.service.calculator.impl.PriceCalculator;
+import by.st.cash_receipt.calculator.impl.PriceCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

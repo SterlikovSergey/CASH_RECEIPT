@@ -9,8 +9,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class DiscountCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

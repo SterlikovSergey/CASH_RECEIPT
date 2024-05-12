@@ -13,7 +13,6 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-@Component
 public class CashReceiptDto {
     private Map<Long,Long> map;
 }

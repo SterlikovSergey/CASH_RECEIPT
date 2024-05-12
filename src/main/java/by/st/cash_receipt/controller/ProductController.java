@@ -2,8 +2,6 @@ package by.st.cash_receipt.controller;
 
 import by.st.cash_receipt.dto.ProductDto;
 import by.st.cash_receipt.mapper.ProductMapper;
-import by.st.cash_receipt.model.Product;
-import by.st.cash_receipt.repository.ProductRepository;
 import by.st.cash_receipt.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,7 @@ public class ProductController {
     private final ProductMapper productMapper;
     @PostMapping
     public ResponseEntity<Object> addProduct(@RequestBody  ProductDto dto){
-        return new ResponseEntity<>(productService.addProduct(productMapper.toProduct(dto)),
+        return new ResponseEntity<>(productService.add(productMapper.toProduct(dto)),
                 HttpStatus.CREATED);
     }
 }

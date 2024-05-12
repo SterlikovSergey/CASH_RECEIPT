@@ -17,19 +17,19 @@ import java.util.Map;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public Product addProduct(Product product) {
+    public Product add(Product product) {
         return productRepository.save(product);
     }
 
-    public Product getProduct(Long id) {
+    public Product get(Long id) {
         return productRepository.findById(id).orElseThrow();
     }
 
-    public List<Product> getAllProductsBy(List<Long> ids) {
+    public List<Product> getAllBy(List<Long> ids) {
         return productRepository.findAllById(ids);
     }
 
-    public Map<Product, Integer> getProductsCount(List<Long> itemsIds) {
+    public Map<Product, Integer> getCounts(List<Long> itemsIds) {
         List<Product> products = productRepository.findAllById(itemsIds);
         Map<Product, Integer> productIntegerMap = new HashMap<>();
         for (Product product : products) {

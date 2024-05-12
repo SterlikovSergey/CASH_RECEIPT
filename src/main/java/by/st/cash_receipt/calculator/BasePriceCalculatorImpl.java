@@ -1,12 +1,13 @@
-package by.st.cash_receipt.service.calculator;
+package by.st.cash_receipt.calculator;
 
 import by.st.cash_receipt.model.Product;
-import by.st.cash_receipt.service.calculator.impl.PriceCalculator;;
+import by.st.cash_receipt.calculator.impl.PriceCalculator;;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

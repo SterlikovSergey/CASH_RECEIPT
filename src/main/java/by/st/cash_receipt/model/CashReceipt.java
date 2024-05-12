@@ -15,8 +15,6 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class CashReceipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
