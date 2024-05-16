@@ -1,11 +1,11 @@
-package by.st.cash_receipt.calculator;
+package by.st.cash_receipt.calculator.impl;
 
 import by.st.cash_receipt.model.DiscountCard;
-import by.st.cash_receipt.calculator.impl.PriceCalculator;
+import by.st.cash_receipt.calculator.PriceCalculator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class DiscountPriceCalculatorImpl implements PriceCalculator {
     private PriceCalculator calculator;

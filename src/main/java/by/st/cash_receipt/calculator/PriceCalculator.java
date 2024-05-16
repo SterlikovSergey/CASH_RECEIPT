@@ -1,8 +1,7 @@
-package by.st.cash_receipt.calculator.impl;
+package by.st.cash_receipt.calculator;
 
-import org.springframework.stereotype.Service;
 
-@Service
+
 public interface PriceCalculator {
     Double calculatePrice();
 

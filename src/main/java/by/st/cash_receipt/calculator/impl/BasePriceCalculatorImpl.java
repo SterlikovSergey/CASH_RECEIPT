@@ -1,15 +1,14 @@
-package by.st.cash_receipt.calculator;
+package by.st.cash_receipt.calculator.impl;
 
 import by.st.cash_receipt.model.Product;
-import by.st.cash_receipt.calculator.impl.PriceCalculator;;
+import by.st.cash_receipt.calculator.PriceCalculator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class BasePriceCalculatorImpl implements PriceCalculator {
     private Map<Product, Integer> products;

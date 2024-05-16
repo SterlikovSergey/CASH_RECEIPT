@@ -9,9 +9,6 @@ import java.util.Map;
 
 @Service
 public class CashReceiptService {
-    public void createCashReceipt(Map<Product, Long> productLongMap, DiscountCard discountCard) {
-    }
-
     public CashReceipt calculateTotalPrice(Map<Product, Integer> productLongMap, DiscountCard discountCard) {
         double totalPrice = 0.0;
         double totalDiscount = 0.0;
