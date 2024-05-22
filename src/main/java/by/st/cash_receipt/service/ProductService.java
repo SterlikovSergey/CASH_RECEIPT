@@ -38,4 +38,8 @@ public class ProductService {
         }
         return productIntegerMap;
     }
+
+    public List<Product> getAll() {
+        return productRepository.findAll();
+    }
 }

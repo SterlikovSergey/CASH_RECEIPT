@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        /* Ваши стили */
+    </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Подключаем скрипт от Telegram -->
+</head>
+
+<body>
+<div id="productList"> <!-- Список товаров -->
+</div>
+<button id="addToCart">Добавить в корзину</button> <!-- Общая кнопка для добавления в корзину -->
+</body>
+
+<script>
+    let tg = window.Telegram.WebApp; // Получаем объект webapp Telegram
+
+    let productList = document.getElementById("productList"); // Получаем блок productList
+
+    let cart = {}; // Корзина для хранения выбранных товаров и их количества
+
+    fetch('/product') // Запрашиваем список товаров с сервера
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(product => { // Для каждого товара
+                let productCard = document.createElement('div'); // Создаем div для товара
+
+                let description = document.createElement('p'); // Создаем параграф для описания
+                description.innerText = product.description; // Устанавливаем текст описания
+                productCard.appendChild(description); // Добавляем описание в карточку товара
+
+                let price = document.createElement('p'); // Создаем параграф для цены
+                price.innerText = `Цена: ${product.price}`; // Устанавливаем текст цены
+                productCard.appendChild(price); // Добавляем цену в карточку товара
+
+                let quantityInput = document.createElement('input'); // Создаем input для выбора количества
+                quantityInput.type = 'number'; // Устанавливаем тип input в 'number'
+                quantityInput.min = '0'; // Устанавливаем минимальное значение в '0'
+                quantityInput.value = '0'; // Устанавливаем начальное значение в '0'
+                productCard.appendChild(quantityInput); // Добавляем input в карточку товара
+
+                if (product.isPromotional) { // Если товар продвигается
+                    let promo = document.createElement('p'); // Создаем параграф для промо-текста
+                    promo.innerText = 'Продвигаемый продукт'; // Устанавливаем промо-текст
+                    productCard.appendChild(promo); // Добавляем промо-текст в карточку товара
+                }
+
+                productList.appendChild(productCard); // Добавляем карточку товара в список товаров
+
+                cart[product.description] = quantityInput; // Добавляем input в корзину
+            });
+        });
+
+    let addToCartButton = document.getElementById('addToCart'); // Получаем кнопку "Добавить в корзину"
+    addToCartButton.addEventListener('click', function() { // Добавляем обработчик события для кнопки
+        let cartData = {}; // Данные для отправки в Telegram
+        for (let product in cart) { // Для каждого товара в корзине
+            let quantity = cart[product].value; // Получаем выбранное количество
+            if (quantity > 0) { // Если количество больше 0
+                cartData[product] = quantity; // Добавляем товар и количество в данные для отправки
+            }
+        }
+        tg.sendData(cartData); // Отправляем данные в Telegram
+    });
+
+    // Ваш код для работы с Telegram WebApp
+</script>
+</html>
+
+
