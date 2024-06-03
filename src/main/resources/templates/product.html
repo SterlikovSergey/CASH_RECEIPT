@@ -7,20 +7,70 @@
     <title>Product List</title>
     <style>
         /* Ваши стили */
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 20px;
+            width: calc(50% - 20px); /* Размер каждой карточки товара таков, что в ряду помещается две карточки */
+        }
+        .product-card img {
+            width: 100px;
+            height: 100px;
+        }
+        .product-card p {
+            margin: 10px 0;
+        }
+        .product-card .buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .product-card button {
+            margin: 5px;
+            flex-grow: 1;
+            padding: 10px;
+        }
+        .product-card .add {
+            background-color: green;
+            color: white;
+        }
+        .product-card .remove {
+            background-color: red;
+            color: white;
+        }
+        #checkout {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background-color: blue;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Подключаем скрипт от Telegram -->
 </head>
 
 <body>
-<div id="productList"> <!-- Список товаров -->
+<div id="productList" class="product-list"> <!-- Список товаров -->
 </div>
-<button id="addToCart">Добавить в корзину</button> <!-- Общая кнопка для добавления в корзину -->
+<button id="checkout">Оформить заказ</button> <!-- Кнопка для оформления заказа -->
 </body>
 
 <script>
     let tg = window.Telegram.WebApp; // Получаем объект webapp Telegram
 
-    let productList = document.getElementById("productList"); // Получаем блок productList
+    let productList = document.getElementById("productList");// Получаем блок productList
+    let checkoutButton = document.getElementById('checkout');
 
     let cart = {}; // Корзина для хранения выбранных товаров и их количества
 
@@ -29,6 +79,11 @@
         .then(data => {
             data.forEach(product => { // Для каждого товара
                 let productCard = document.createElement('div'); // Создаем div для товара
+                productCard.className = 'product-card';
+
+                let image = document.createElement('img'); // Создаем img для иконки товара
+                image.src = "/images/_4693f0ae-d442-4086-be77-aa15ccc1ddd4.jpg";// Устанавливаем src изображения
+                productCard.appendChild(image); // Добавляем изображение в карточку товара
 
                 let description = document.createElement('p'); // Создаем параграф для описания
                 description.innerText = product.description; // Устанавливаем текст описания
@@ -44,6 +99,27 @@
                 quantityInput.value = '0'; // Устанавливаем начальное значение в '0'
                 productCard.appendChild(quantityInput); // Добавляем input в карточку товара
 
+                let buttons = document.createElement('div'); // Создаем div для кнопок
+                buttons.className = 'buttons';
+
+                let addButton = document.createElement('button'); // Создаем кнопку "Добавить товар"
+                addButton.innerText = 'Добавить товар';
+                addButton.className = 'add';
+                addButton.addEventListener('click', function() { // Добавляем обработчик события для кнопки
+                    quantityInput.value = parseInt(quantityInput.value) + 1; // Увеличиваем количество на 1
+                });
+                buttons.appendChild(addButton); // Добавляем кнопку в div
+
+                let removeButton = document.createElement('button'); // Создаем кнопку "Убрать товар"
+                removeButton.innerText = 'Убрать товар';
+                removeButton.className = 'remove';
+                removeButton.addEventListener('click', function() { // Добавляем обработчик события для кнопки
+                    quantityInput.value = Math.max(0, parseInt(quantityInput.value) - 1); // Уменьшаем количество на 1, но не меньше 0
+                });
+                buttons.appendChild(removeButton); // Добавляем кнопку в div
+
+                productCard.appendChild(buttons); // Добавляем div с кнопками в карточку товара
+
                 if (product.isPromotional) { // Если товар продвигается
                     let promo = document.createElement('p'); // Создаем параграф для промо-текста
                     promo.innerText = 'Продвигаемый продукт'; // Устанавливаем промо-текст
@@ -56,16 +132,19 @@
             });
         });
 
-    let addToCartButton = document.getElementById('addToCart'); // Получаем кнопку "Добавить в корзину"
-    addToCartButton.addEventListener('click', function() { // Добавляем обработчик события для кнопки
-        let cartData = {}; // Данные для отправки в Telegram
-        for (let product in cart) { // Для каждого товара в корзине
-            let quantity = cart[product].value; // Получаем выбранное количество
-            if (quantity > 0) { // Если количество больше 0
-                cartData[product] = quantity; // Добавляем товар и количество в данные для отправки
+    checkoutButton.addEventListener('click', function() {
+        let cartData = {}; // Инициализируем объект данных корзины
+        for (let product in cart) {
+            let quantity = parseInt(cart[product].value); // Преобразуем значение в число
+            if (quantity > 0) { // Проверяем, что количество больше нуля
+                cartData[product] = quantity; // Добавляем товар в данные корзины
             }
         }
-        tg.sendData(cartData); // Отправляем данные в Telegram
+        if (Object.keys(cartData).length > 0) { // Проверяем, что в cartData есть данные
+            tg.sendData(JSON.stringify(cartData)); // Отправляем данные в Telegram
+        } else {
+            console.error('Корзина пуста'); // Выводим ошибку, если корзина пуста
+        }
     });
 
     // Ваш код для работы с Telegram WebApp
