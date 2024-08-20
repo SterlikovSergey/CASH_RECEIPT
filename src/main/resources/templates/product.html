@@ -74,6 +74,7 @@
 
     let cart = {}; // Корзина для хранения выбранных товаров и их количества
 
+
     fetch('/product') // Запрашиваем список товаров с сервера
         .then(response => response.json())
         .then(data => {
@@ -141,7 +142,20 @@
             }
         }
         if (Object.keys(cartData).length > 0) { // Проверяем, что в cartData есть данные
-            tg.sendData(JSON.stringify(cartData)); // Отправляем данные в Telegram
+            fetch('/webhook-endpoint', { // Отправляем данные на ваш webhook endpoint
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cartData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         } else {
             console.error('Корзина пуста'); // Выводим ошибку, если корзина пуста
         }

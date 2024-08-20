@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -19,20 +20,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final BotProperties botProperties;
     @Override
     public void onUpdateReceived(Update update) {
-            if (update.hasCallbackQuery()) {
-                CallbackQuery callbackQuery = update.getCallbackQuery();
-                String data = callbackQuery.getData(); // Получаем данные в формате строки JSON
-
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode dataNode = mapper.readTree(data); // Преобразуем строку JSON в JsonNode
-                    // Теперь вы можете обрабатывать данные JsonNode
-                    log.info("Received data: {}", dataNode);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String chatId = update.getMessage().getChatId().toString();
+            String data = update.getMessage().getText();
+            log.info(data);
         }
+
+    }
 
 
 
@@ -42,6 +36,14 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setText(text);
         try {
             execute(message); // Вызов метода для отправки сообщения
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setWebhook(SetWebhook setWebhook) {
+        try {
+            execute(setWebhook);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
